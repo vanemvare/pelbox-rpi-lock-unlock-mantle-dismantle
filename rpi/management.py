@@ -194,21 +194,21 @@ def dismantle():
         return jsonify({"success": False, "error": "JSON is badly formatted"}), 400, {"ContentType":"application/json"}
 
 def move_motors_forward(value):
-    motor1.moveForward(100, value) # Move Forward with 80% voltage for value seconds
+    motor1.moveForward(100, 1) # Move Forward with 80% voltage for value seconds
     time.sleep(0.25) 
     motor1.stop()
             
-    if previous_user_expanded_value == 5:
+    if value == 5:
         motor2.moveForward(100, 3)
         time.sleep(1) 
         motor2.stop()
 
 def move_motors_back(value):
-    motor1.moveBackward(100, value)
+    motor1.moveBackward(100, 1)
     time.sleep(0.25)
     motor1.stop()
             
-    if previous_user_expanded_value == 5:
+    if value == 5:
         motor2.moveBackward(100, 9)
         motor2.stop()
 
