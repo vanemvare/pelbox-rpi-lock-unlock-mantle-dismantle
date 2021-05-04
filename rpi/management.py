@@ -232,14 +232,14 @@ def expanding_value():
                 previous_user_expanded_value = pelbox.expanding_value
 
             expanding_value = data_json["expanding-value"]
-            if previous_user_expanded_value < epxanding_value:
-                move_motors_forward(epxanding_value)
+            if previous_user_expanded_value < expanding_value:
+                move_motors_forward(expanding_value)
             else:
-                move_motors_back(epxanding_value)
+                move_motors_back(expanding_value)
 
-            previous_user_expanded_value = epxanding_value
+            previous_user_expanded_value = expanding_value
 
-            common.update_expanding_value(member.id, epxanding_value)
+            common.update_expanding_value(member.id, expanding_value)
             return jsonify({"success": True}), 200, {"ContentType":"application/json"}
         elif status_code == 200 and not logged_in:
             return jsonify({"success": False, "message": f"Member is not logged in"}), 401, {"ContentType":"application/json"}
