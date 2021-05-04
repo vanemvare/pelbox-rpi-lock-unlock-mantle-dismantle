@@ -4,6 +4,7 @@ import logging
 import psycopg2
 import json
 import jwt
+import time
 
 import RPi.GPIO as GPIO
 
@@ -39,13 +40,13 @@ class Motor():
         GPIO.output(self.In1, GPIO.LOW)
         GPIO.output(self.In2, GPIO.HIGH)
         self.pwm2.ChangeDutyCycle(speed)
-        sleep(t)                        # delay
+        time.sleep(t)                        # delay
         
     def moveBackward(self, speed, t=0): # 'speed' allows the user to input spee
         GPIO.output(self.In1, GPIO.HIGH)
         GPIO.output(self.In2, GPIO.LOW)
         self.pwm1.ChangeDutyCycle(speed)
-        sleep(t)                        # delay
+        time.sleep(t)                        # delay
     
     def stop(self):
         self.pwm1.ChangeDutyCycle(0)
@@ -188,11 +189,11 @@ def dismantle():
 
 def move_motors_forward():
     motor1.moveForward(100, 8) # Move Forward with 80% voltage for 2 seconds
-    sleep(2) 
+    time.sleep(2) 
     motor1.stop()
             
     motor2.moveForward(100, 3)
-    sleep(1) 
+    time.sleep(1) 
     motor2.stop()
             
     motor3.moveForward(100, 8)
@@ -200,11 +201,11 @@ def move_motors_forward():
 
 def move_motors_back():
     motor1.moveBackward(100, 8)
-    sleep(2)
+    time.sleep(2)
     motor1.stop()
             
     motor3.moveBackward(100, 8)
-    sleep(1)
+    time.sleep(1)
     motor3.stop()
             
     motor2.moveBackward(100, 5)
