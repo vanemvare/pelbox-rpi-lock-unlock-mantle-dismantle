@@ -78,7 +78,7 @@ def get_pelbox_settings(member_id):
     try:
         cur = conn.cursor()
         query = """
-           	SELECT rd.id, rd.security_key, rd.user_security_key, rd.host, rd.member_id, rd.connected, bl.locked, bl.dismantle, bl.expanding_value
+           	SELECT rd.id, rd.security_key, rd.user_security_key, rd.host, rd.member_id, rd.connected, bl.locked, bl.dismantle, bl.expanding_value, bl.door_open
            	FROM rpi_devices rd
             INNER JOIN box_locking bl ON bl.member_id = rd.member_id
            	WHERE rd.member_id = %s
@@ -672,6 +672,26 @@ def update_expanding_value(member_id, expanding_value):
         """
 
         cur.execute(query, (expanding_value, member_id,))
+        conn.commit()
+
+        cur.close()
+    except Exception as e:
+        log.critical(e)
+
+def update_door_status(member_id, door_open):
+    """
+        Update box door_open
+    """
+    try:
+        cur = conn.cursor()
+
+        query = """
+            UPDATE box_locking
+            SET door_open = %s
+            WHERE member_id = %s
+        """
+
+        cur.execute(query, (door_open, member_id,))
         conn.commit()
 
         cur.close()

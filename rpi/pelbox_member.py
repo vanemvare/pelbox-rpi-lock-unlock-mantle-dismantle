@@ -13,9 +13,10 @@ class PelBox:
         self.locked = data_json["locked"]
         self.dismantle = data_json["dismantle"]
         self.expanding_value = data_json["expanding_value"]
+        self.door_open = data_json["door_open]
 
     @staticmethod
-    def new(id, security_key, user_security_key, host, member_id, connected, locked, dismantle, expanding_value):
+    def new(id, security_key, user_security_key, host, member_id, connected, locked, dismantle, expanding_value, door_open):
         new_data = {
             "id": id,
             "security_key": security_key,
@@ -25,7 +26,8 @@ class PelBox:
             "connected": connected,
             "locked": locked,
             "dismantle": dismantle,
-            "expanding_value": expanding_value
+            "expanding_value": expanding_value,
+            "door_open": door_open
         }
 
         pelbox = PelBox(json.dumps(new_data).encode("utf-8"))
@@ -41,5 +43,6 @@ class PelBox:
             "connected": self.connected,
             "locked": self.locked,
             "dismantle": self.dismantle,
-            "expanding_value": self.expanding_value
+            "expanding_value": self.expanding_value,
+            "door_open": self.door_open
         }

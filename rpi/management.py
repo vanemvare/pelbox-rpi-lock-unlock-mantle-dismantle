@@ -178,9 +178,9 @@ def dismantle():
 
             common.update_dismantle(member.id, data_json["dismantle"])
             if data_json["dismantle"]:
-                GPIO.output(relay,1)
+                GPIO.output(relay, 1)
             else:
-                GPIO.output(relay,0)
+                GPIO.output(relay, 0)
             return jsonify({"success": True}), 200, {"ContentType":"application/json"}
         elif status_code == 200 and not logged_in:
             return jsonify({"success": False, "message": f"Member is not logged in"}), 401, {"ContentType":"application/json"}
@@ -240,6 +240,45 @@ def expanding_value():
             previous_user_expanded_value = expanding_value
 
             common.update_expanding_value(member.id, expanding_value)
+            return jsonify({"success": True}), 200, {"ContentType":"application/json"}
+        elif status_code == 200 and not logged_in:
+            return jsonify({"success": False, "message": f"Member is not logged in"}), 401, {"ContentType":"application/json"}
+        else:
+            return jsonify({"success": False, "message": f"Something went wrong"}), 500, {"ContentType":"application/json"}
+    except KeyError as e:
+        log.critical(e)
+        return jsonify({"success": False, "error": "Missing arguments"}), 400, {"ContentType":"application/json"}
+    except json.decoder.JSONDecodeError as e:
+        log.critical(e)
+        return jsonify({"success": False, "error": "JSON is badly formatted"}), 400, {"ContentType":"application/json"}
+
+
+@management.route("/set_door_status", methods=["PUT"])
+def expanding_value():
+    try:
+        data_json = json.loads(request.data.decode("utf-8"))
+        data_json = {key: None if data_json[key] == "" else data_json[key] for key in data_json}
+ 
+        logged_in, status_code = keycloak.is_member_logged(data_json["access_token"])
+        if status_code == 200 and logged_in:
+            username = jwt.decode(data_json["access_token"], verify=False)["preferred_username"]
+            member_details = common.get_member_details(username)
+            member = Member.new(*member_details)
+
+            pelbox_settings = common.get_pelbox_settings(member.id)
+            pelbox = PelBox.new(*pelbox_settings)
+
+            door_status = data_json["door_status"]
+            if door_status == "open":
+                motor3.moveForward(100, 8)
+                time.sleep(2)
+                motor3.stop()
+            else:
+                moto3.moveBackward(100, 8)
+                time.sleep(2)
+                motor3.stop()
+
+            common.update_door_status(member.id, expanding_value)
             return jsonify({"success": True}), 200, {"ContentType":"application/json"}
         elif status_code == 200 and not logged_in:
             return jsonify({"success": False, "message": f"Member is not logged in"}), 401, {"ContentType":"application/json"}
