@@ -52,12 +52,11 @@ class Motor():
         self.pwm1.ChangeDutyCycle(0)
         self.pwm2.ChangeDutyCycle(0)
 
-GPIO.setup(18, GPIO.OUT)
-GPIO.setup(5, GPIO.OUT)
-
 relay = 21
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
+GPIO.setup(18, GPIO.OUT)
+GPIO.setup(5, GPIO.OUT)
 GPIO.setup(relay,GPIO.OUT)
 GPIO.output(relay , 0)
 
