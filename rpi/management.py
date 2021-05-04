@@ -52,7 +52,10 @@ class Motor():
         self.pwm1.ChangeDutyCycle(0)
         self.pwm2.ChangeDutyCycle(0)
 
-relay = 21;
+GPIO.setup(18, GPIO.OUT)
+GPIO.setup(5, GPIO.OUT)
+
+relay = 21
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(relay,GPIO.OUT)
@@ -195,21 +198,13 @@ def move_motors_forward():
     motor2.moveForward(100, 3)
     time.sleep(1) 
     motor2.stop()
-            
-    motor3.moveForward(100, 8)
-    motor3.stop() 
 
 def move_motors_back():
     motor1.moveBackward(100, 8)
     time.sleep(2)
     motor1.stop()
             
-    motor3.moveBackward(100, 8)
-    time.sleep(1)
-    motor3.stop()
-            
-    motor2.moveBackward(100, 5)
-    motor2.moveBackward(100, 4)
+    motor2.moveBackward(100, 9)
     motor2.stop()
 
 @management.route("/set_expanding_value", methods=["PUT"])
