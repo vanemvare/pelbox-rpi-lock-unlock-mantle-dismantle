@@ -194,21 +194,23 @@ def dismantle():
         return jsonify({"success": False, "error": "JSON is badly formatted"}), 400, {"ContentType":"application/json"}
 
 def move_motors_forward(value):
-    motor1.moveForward(100, 0.25 * value) # Move Forward with 80% voltage for value seconds
-    time.sleep(0.25 * value) 
+    motor1.moveForward(100, value) # Move Forward with 80% voltage for value seconds
+    time.sleep(0.25) 
     motor1.stop()
             
-    motor2.moveForward(100, 0.375 * value)
-    time.sleep(0.125 * value) 
-    motor2.stop()
+    if previous_user_expanded_value == 5:
+        motor2.moveForward(100, 3)
+        time.sleep(1) 
+        motor2.stop()
 
 def move_motors_back(value):
-    motor1.moveBackward(100, 0.25 * value)
-    time.sleep(0.25 * value)
+    motor1.moveBackward(100, value)
+    time.sleep(0.25)
     motor1.stop()
             
-    motor2.moveBackward(100, 1.125 * value)
-    motor2.stop()
+    if previous_user_expanded_value == 5:
+        motor2.moveBackward(100, 9)
+        motor2.stop()
 
 @management.route("/set_expanding_value", methods=["PUT"])
 def expanding_value():
@@ -229,14 +231,15 @@ def expanding_value():
             if previous_user_expanded_value == None:
                 previous_user_expanded_value = pelbox.expanding_value
 
-            if previous_user_expanded_value < data_json["expanding-value"]:
-                move_motors_forward(data_json["expanding-value"])
+            expanding_value = data_json["expanding-value"]
+            if previous_user_expanded_value < epxanding_value:
+                move_motors_forward(epxanding_value)
             else:
-                move_motors_back(data_json["expanding-value"])
+                move_motors_back(epxanding_value)
 
-            previous_user_expanded_value = data_json["expanding-value"]
+            previous_user_expanded_value = epxanding_value
 
-            common.update_expanding_value(member.id, data_json["expanding-value"])
+            common.update_expanding_value(member.id, epxanding_value)
             return jsonify({"success": True}), 200, {"ContentType":"application/json"}
         elif status_code == 200 and not logged_in:
             return jsonify({"success": False, "message": f"Member is not logged in"}), 401, {"ContentType":"application/json"}
