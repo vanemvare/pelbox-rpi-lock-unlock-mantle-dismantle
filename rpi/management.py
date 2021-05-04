@@ -66,6 +66,8 @@ motor1  = Motor(13, 6)
 motor2  = Motor(17, 27)
 motor3  = Motor(23, 24)
 
+previous_user_expanded_value = None
+
 keycloak = Keycloak(env.str("ADMIN_CLIENT_SECRET"), env.str("MEMBER_CLIENT_SECRET"), env.str("KEYCLOAK_HOST"))
 
 try:
@@ -191,18 +193,18 @@ def dismantle():
         log.critical(e)
         return jsonify({"success": False, "error": "JSON is badly formatted"}), 400, {"ContentType":"application/json"}
 
-def move_motors_forward():
-    motor1.moveForward(100, 8) # Move Forward with 80% voltage for 2 seconds
-    time.sleep(2) 
+def move_motors_forward(value):
+    motor1.moveForward(100, 8) # Move Forward with 80% voltage for value seconds
+    time.sleep(0.25 * value) 
     motor1.stop()
             
     motor2.moveForward(100, 3)
-    time.sleep(1) 
+    time.sleep(0.125 * value) 
     motor2.stop()
 
-def move_motors_back():
+def move_motors_back(value):
     motor1.moveBackward(100, 8)
-    time.sleep(2)
+    time.sleep(0.25 * value)
     motor1.stop()
             
     motor2.moveBackward(100, 9)
@@ -220,11 +222,20 @@ def expanding_value():
             member_details = common.get_member_details(username)
             member = Member.new(*member_details)
 
+            pelbox_settings = common.get_pelbox_settings(member.id)
+            pelbox = PelBox.new(*pelbox_settings)
+
+            if previous_user_expanded_value == None:
+                previous_user_expanded_value = pelbox.expanding_value
+
+            if previous_user_expanded_value < data_json["expanding-value"]:
+                move_motors_forward(data_json["expanding-value"])
+            else:
+                move_motors_back(data_json["expanding-value"])
+
+            previous_user_expanded_value = data_json["expanding-value"]
+
             common.update_expanding_value(member.id, data_json["expanding-value"])
-            if data_json["expanding-value"] == 8:
-                move_motors_forward()
-            elif data_json["expanding-value"] == 0:
-                move_motors_back()
             return jsonify({"success": True}), 200, {"ContentType":"application/json"}
         elif status_code == 200 and not logged_in:
             return jsonify({"success": False, "message": f"Member is not logged in"}), 401, {"ContentType":"application/json"}
