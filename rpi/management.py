@@ -194,20 +194,20 @@ def dismantle():
         return jsonify({"success": False, "error": "JSON is badly formatted"}), 400, {"ContentType":"application/json"}
 
 def move_motors_forward(value):
-    motor1.moveForward(100, 8) # Move Forward with 80% voltage for value seconds
+    motor1.moveForward(100, 0.25 * value) # Move Forward with 80% voltage for value seconds
     time.sleep(0.25 * value) 
     motor1.stop()
             
-    motor2.moveForward(100, 3)
+    motor2.moveForward(100, 0.375 * value)
     time.sleep(0.125 * value) 
     motor2.stop()
 
 def move_motors_back(value):
-    motor1.moveBackward(100, 8)
+    motor1.moveBackward(100, 0.25 * value)
     time.sleep(0.25 * value)
     motor1.stop()
             
-    motor2.moveBackward(100, 9)
+    motor2.moveBackward(100, 1.125 * value)
     motor2.stop()
 
 @management.route("/set_expanding_value", methods=["PUT"])
@@ -225,6 +225,7 @@ def expanding_value():
             pelbox_settings = common.get_pelbox_settings(member.id)
             pelbox = PelBox.new(*pelbox_settings)
 
+            global previous_user_expanded_value
             if previous_user_expanded_value == None:
                 previous_user_expanded_value = pelbox.expanding_value
 
