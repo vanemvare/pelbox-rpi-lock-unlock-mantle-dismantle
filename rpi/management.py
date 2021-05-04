@@ -14,6 +14,16 @@ from rpi.pelbox_member import PelBox
 from rpi import common
 from rpi.keycloak import Keycloak
 
+relay = 21
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup(18, GPIO.OUT)
+GPIO.setup(5, GPIO.OUT)
+
+GPIO.setup(relay,GPIO.OUT)
+GPIO.output(relay , 0)
+
 logging.basicConfig()
 log = logging.getLogger()
 logging.root.setLevel(logging.NOTSET)
@@ -51,14 +61,6 @@ class Motor():
     def stop(self):
         self.pwm1.ChangeDutyCycle(0)
         self.pwm2.ChangeDutyCycle(0)
-
-relay = 21
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
-GPIO.setup(5, GPIO.OUT)
-GPIO.setup(relay,GPIO.OUT)
-GPIO.output(relay , 0)
 
 motor1  = Motor(13, 6)
 motor2  = Motor(17, 27)
