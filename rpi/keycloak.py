@@ -24,7 +24,7 @@ class Keycloak:
 
             If login is successfull it will set access and refresh token.
         """
-        url = f"http://{self.host}:8080/auth/realms/master/protocol/openid-connect/token"
+        url = f"http://{self.host}/auth/realms/master/protocol/openid-connect/token"
         payload = f"grant_type=client_credentials&client_id=admin-cli&client_secret={self.admin_client_secret}"
         headers = {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -46,7 +46,7 @@ class Keycloak:
 
             If the access token is not valid it will use refresh token to get new access token.
         """
-        url = f"http://{self.host}:8080/auth/admin/realms/pelbox/users?username=test&enabled=true"
+        url = f"http://{self.host}/auth/admin/realms/pelbox/users?username=test&enabled=true"
         headers = {
             "Authorization": f"Bearer {self.access_token}"
         }
@@ -62,7 +62,7 @@ class Keycloak:
         """
             Get new access and refresh token.
         """
-        url = f"http://{self.host}:8080/auth/realms/master/protocol/openid-connect/token"
+        url = f"http://{self.host}/auth/realms/master/protocol/openid-connect/token"
         payload = f"grant_type=refresh_token&client_id=admin-cli&refresh_token={self.refresh_token}&client_secret={self.admin_client_secret}"
         headers = {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -90,7 +90,7 @@ class Keycloak:
         """
         self.verify_admin_token()
 
-        url = f"http://{self.host}:8080/auth/admin/realms/pelbox/users"
+        url = f"http://{self.host}/auth/admin/realms/pelbox/users"
         payload = {
             "email": member.email,
             "enabled": "true",
@@ -124,7 +124,7 @@ class Keycloak:
 
             If member credentials are good member with be logged in and tokens will be returned.
         """
-        url = f"http://{self.host}:8080/auth/realms/pelbox/protocol/openid-connect/token"
+        url = f"http://{self.host}/auth/realms/pelbox/protocol/openid-connect/token"
         payload = f"client_id=pelbox-users&grant_type=password&client_secret={self.member_client_secret}&scope=openid&username={member.username}&password={member.password}"
         headers = {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -159,7 +159,7 @@ class Keycloak:
             log.critical(e)
             return False, 500
 
-        url = f"http://{self.host}:8080/auth/admin/realms/pelbox/users/{id}/sessions"
+        url = f"http://{self.host}/auth/admin/realms/pelbox/users/{id}/sessions"
         headers = {
             "Authorization": f"Bearer {self.access_token}"
         }
@@ -176,7 +176,7 @@ class Keycloak:
     def get_member_id(self, username):
         self.verify_admin_token()
 
-        url = f"http://{self.host}:8080/auth/admin/realms/pelbox/users?username={username}"
+        url = f"http://{self.host}/auth/admin/realms/pelbox/users?username={username}"
         headers = {
             "Authorization": f"Bearer {self.access_token}"
         }
