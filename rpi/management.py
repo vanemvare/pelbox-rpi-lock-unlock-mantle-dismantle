@@ -220,25 +220,11 @@ def move_motors_forward(value):
     motor1.moveForward(100, 1) # Move Forward with 80% voltage for value seconds
     time.sleep(0.25) 
     motor1.stop()
-    
-    global box_expanded_to_full
-    if value == 5:
-        box_expanded_to_full = True
-        motor2.moveForward(100, 2)
-        time.sleep(1) 
-        motor2.stop()
 
 def move_motors_back(value):
     motor1.moveBackward(100, 1)
     time.sleep(0.25)
     motor1.stop()
-    
-    global box_expanded_to_full
-    if value == 0 and box_expanded_to_full:
-        box_expanded_to_full = False
-        motor2.moveBackward(100, 2)
-        time.sleep(1)
-        motor2.stop()
 
 @management.route("/set_expanding_value", methods=["PUT"])
 def expanding_value():
