@@ -298,11 +298,11 @@ def set_door_status():
             door_status = data_json["door_status"]
             if door_status == "open" and pelbox.door_open == False:
                 motor3.moveForward(100, 5)
-                time.sleep(2)
+                time.sleep(0.25)
                 motor3.stop()
             elif door_status == "close" and pelbox.door_open == True:
                 motor3.moveBackward(100, 5)
-                time.sleep(2)
+                time.sleep(0.25)
                 motor3.stop()
 
             common.update_door_status(member.id, True if door_status == "open" else False)
