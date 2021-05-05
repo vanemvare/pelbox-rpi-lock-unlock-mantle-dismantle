@@ -67,6 +67,7 @@ motor2  = Motor(17, 27)
 motor3  = Motor(23, 24)
 
 previous_user_expanded_value = None
+box_expanded_to_full = False
 
 keycloak = Keycloak(env.str("ADMIN_CLIENT_SECRET"), env.str("MEMBER_CLIENT_SECRET"), env.str("KEYCLOAK_HOST"))
 
@@ -197,8 +198,9 @@ def move_motors_forward(value):
     motor1.moveForward(100, 1) # Move Forward with 80% voltage for value seconds
     time.sleep(0.25) 
     motor1.stop()
-            
+    
     if value == 5:
+        box_expanded_to_full = True
         motor2.moveForward(100, 2)
         time.sleep(1) 
         motor2.stop()
@@ -208,7 +210,8 @@ def move_motors_back(value):
     time.sleep(0.25)
     motor1.stop()
             
-    if value == 5:
+    if value == 0 and box_expanded_to_full:
+        box_expanded_to_full = False
         motor2.moveBackward(100, 2)
         motor2.stop()
 
