@@ -274,7 +274,7 @@ def set_door_status():
                 time.sleep(2)
                 motor3.stop()
             else:
-                moto3.moveBackward(100, 8)
+                motor3.moveBackward(100, 8)
                 time.sleep(2)
                 motor3.stop()
 
