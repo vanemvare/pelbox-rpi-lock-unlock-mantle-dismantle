@@ -215,7 +215,7 @@ def move_motors_back(value):
     if value == 0 and box_expanded_to_full:
         box_expanded_to_full = False
         motor2.moveBackward(100, 2)
-        time.slep(2)
+        time.slep(1)
         motor2.stop()
 
 @management.route("/set_expanding_value", methods=["PUT"])
