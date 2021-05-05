@@ -199,7 +199,7 @@ def move_motors_forward(value):
     motor1.stop()
             
     if value == 5:
-        motor2.moveForward(100, 3)
+        motor2.moveForward(100, 2)
         time.sleep(1) 
         motor2.stop()
 
@@ -209,7 +209,7 @@ def move_motors_back(value):
     motor1.stop()
             
     if value == 5:
-        motor2.moveBackward(100, 3)
+        motor2.moveBackward(100, 2)
         motor2.stop()
 
 @management.route("/set_expanding_value", methods=["PUT"])
