@@ -199,10 +199,22 @@ def move_motors_full_forward(current_value):
     time.sleep(0.25) 
     motor1.stop()
 
+    global box_expanded_to_full
+    box_expanded_to_full = True
+    motor2.moveForward(100, 2)
+    time.sleep(1) 
+    motor2.stop()
+
 def move_motors_full_backward(current_value):
     motor1.moveBackward(100, 5 - current_value) # Move Forward with 80% voltage for value seconds
     time.sleep(0.25) 
     motor1.stop()
+
+    global box_expanded_to_full
+    box_expanded_to_full = False
+    motor2.moveBackward(100, 2)
+    time.sleep(1)
+    motor2.stop()
 
 def move_motors_forward(value):
     motor1.moveForward(100, 1) # Move Forward with 80% voltage for value seconds
