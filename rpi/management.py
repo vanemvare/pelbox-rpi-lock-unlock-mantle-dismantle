@@ -199,6 +199,7 @@ def move_motors_forward(value):
     time.sleep(0.25) 
     motor1.stop()
     
+    global box_expanded_to_full
     if value == 5:
         box_expanded_to_full = True
         motor2.moveForward(100, 2)
@@ -209,7 +210,8 @@ def move_motors_back(value):
     motor1.moveBackward(100, 1)
     time.sleep(0.25)
     motor1.stop()
-            
+    
+    global box_expanded_to_full
     if value == 0 and box_expanded_to_full:
         box_expanded_to_full = False
         motor2.moveBackward(100, 2)
