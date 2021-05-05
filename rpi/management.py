@@ -254,7 +254,7 @@ def expanding_value():
 
 
 @management.route("/set_door_status", methods=["PUT"])
-def expanding_value():
+def set_door_status():
     try:
         data_json = json.loads(request.data.decode("utf-8"))
         data_json = {key: None if data_json[key] == "" else data_json[key] for key in data_json}
