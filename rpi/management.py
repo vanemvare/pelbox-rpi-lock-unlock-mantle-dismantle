@@ -251,7 +251,7 @@ def expanding_value():
             expanding_value = data_json["expanding-value"]
             if expanding_value == 5:
                 move_motors_full_forward(pelbox.expanding_value)
-            elif expanding_value == 0:
+            elif expanding_value == 0 and box_expanded_to_full:
                 move_motors_full_backward(pelbox.expanding_value)
             elif previous_user_expanded_value < expanding_value:
                 move_motors_forward(expanding_value)
