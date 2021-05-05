@@ -194,6 +194,16 @@ def dismantle():
         log.critical(e)
         return jsonify({"success": False, "error": "JSON is badly formatted"}), 400, {"ContentType":"application/json"}
 
+def move_motors_full_forward(current_value):
+    motor1.moveForward(100, 5 - current_value) # Move Forward with 80% voltage for value seconds
+    time.sleep(0.25) 
+    motor1.stop()
+
+def move_motors_full_backward(current_value):
+    motor1.moveBackward(100, 5 - current_value) # Move Forward with 80% voltage for value seconds
+    time.sleep(0.25) 
+    motor1.stop()
+
 def move_motors_forward(value):
     motor1.moveForward(100, 1) # Move Forward with 80% voltage for value seconds
     time.sleep(0.25) 
@@ -238,7 +248,11 @@ def expanding_value():
                 previous_user_expanded_value = pelbox.expanding_value
 
             expanding_value = data_json["expanding-value"]
-            if previous_user_expanded_value < expanding_value:
+            if expanding_value == 5:
+                move_motors_full_forward(pelbox.expanding_value)
+            elif expanding_value == 0:
+                move_motors_full_backward(pelbox.expanding_value)
+            elif previous_user_expanded_value < expanding_value:
                 move_motors_forward(expanding_value)
             else:
                 move_motors_back(expanding_value)
