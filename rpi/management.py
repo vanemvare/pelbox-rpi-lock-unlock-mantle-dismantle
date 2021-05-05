@@ -278,7 +278,7 @@ def set_door_status():
                 time.sleep(2)
                 motor3.stop()
 
-            common.update_door_status(member.id, expanding_value)
+            common.update_door_status(member.id, door_status)
             return jsonify({"success": True}), 200, {"ContentType":"application/json"}
         elif status_code == 200 and not logged_in:
             return jsonify({"success": False, "message": f"Member is not logged in"}), 401, {"ContentType":"application/json"}
