@@ -269,11 +269,11 @@ def set_door_status():
             pelbox = PelBox.new(*pelbox_settings)
 
             door_status = data_json["door_status"]
-            if door_status == "open":
+            if door_status == "open" and pelbox.door_open == False:
                 motor3.moveForward(100, 8)
                 time.sleep(2)
                 motor3.stop()
-            else:
+            elif door_status == "close" and pelbox.door_open == True:
                 motor3.moveBackward(100, 8)
                 time.sleep(2)
                 motor3.stop()
